@@ -1,17 +1,46 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Box, Stack, Typography, TextField, Button } from "@mui/material";
-
+import { fetchData, exerciseOptions } from "../Utils/fetchData";
 function SearchExercises() {
+  const [search, setSearch] = useState("");
+  const [exercises, setExercises] = useState([])
+  const [bodyParts,setBodyParts]=useState([])
 
-  const [search, setSearch]=useState('')
+
+useEffect(()=>{
+ const fetchExerciseData=async ()=>{
+  const bodyPartsData=await fetchData(
+    "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
+    exerciseOptions)
+
+    setBodyParts(["all", ...bodyPartsData])
+ }
+ fetchExerciseData()
+},
+[])
 
 
-  const handleSearch=async()=>{
-if(search){
-  const ExerciseData=await fetchData
-}
-  }
+
+  const handleSearch = async () => {
+    if (search) {
+      const exercisesData = await fetchData(
+        "https://exercisedb.p.rapidapi.com/exercises",
+        exerciseOptions
+      );
+
+      const searchedExercises = exercisesData.filter(
+        (exercise) =>
+          exercise.name.toLowerCase().includes(search) ||
+          exercise.target.toLowerCase().includes(search) ||
+          exercise.equipment.toLowerCase().includes(search) ||
+          exercise.bodyPart.toLowerCase().includes(search)
+      );
+
+      setSearch("")
+      setExercises(searchedExercises)
+    }
+  };
   return (
     <Stack alignItems="center" mt="37px" justifyContent="center" p="20px">
       <Typography
@@ -20,7 +49,7 @@ if(search){
           fontSize: {
             lg: "44px",
             xs: "30px",
-          }, 
+          },
         }}
         mb="50px"
         textAlign="center"
@@ -45,13 +74,13 @@ if(search){
           height="76px"
           value={search}
           onChange={(event) => {
-          setSearch(event.target.value.toLowerCase())
+            setSearch(event.target.value.toLowerCase());
           }}
           placeholder="seach Exercises"
           type="text"
         />
         <Button
-        onClick={handleSearch}
+          onClick={handleSearch}
           className="Search-btn"
           sx={{
             bgcolor: "#FF2625",
@@ -59,20 +88,32 @@ if(search){
             textTransform: "none",
             width: {
               lg: "175px",
-              xs: "80px"
+              xs: "80px",
             },
             fontSize: {
               lg: "20px",
-              xs: "14px"
+              xs: "14px",
             },
             height: "56px",
             position: "absolute",
-            right:"0"
-
+            right: "0",
           }}
         >
           Search
         </Button>
+      </Box>
+      <Box
+      sx={{
+        position:"relative",
+        width:"100%",
+        p:"20px"
+ 
+      }}
+      >
+<HorizontalScrollbar
+data={bodyParts}
+/>
+
       </Box>
     </Stack>
   );
