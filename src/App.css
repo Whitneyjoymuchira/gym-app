@@ -48,6 +48,7 @@ body {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    
   }
   
   .detail-image {
@@ -87,6 +88,8 @@ body {
   .bodyPart-card {
     transform: scale(1, 1);
     transition: 0.3s all ease-in-out;
+    display: flex;
+    flex-direction: column;
   }
   
   .exercise-card:hover,
@@ -106,6 +109,23 @@ body {
     width: 387px;
     height: 381px;
     text-decoration: none;
+  }
+
+  .ScrollMenu-container {
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+  
+  .react-horizontal-scrolling-menu--scroll-container{
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
+    overflow-x: auto; 
+    flex-wrap: nowrap;
+    width: 1000px;
+   
   }
   
   @media screen and (max-width:1200px) {
